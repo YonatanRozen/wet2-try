@@ -307,7 +307,6 @@ StatusType world_cup_t::buy_team(int buyerId, int boughtId)
         teamsByAbility->remove(*buyer, &CompareByAbility);
         boughtLeader->SetNext(buyerLeader);
         boughtLeader->multiplySpirit(buyer->GetLeader()->GetPartialSpirit().inv()*buyer->GetTeamSpirit());
-        boughtLeader->multiplySpirit(buyer->GetTeamSpirit());
         boughtLeader->SetGamesPlayed(boughtLeader->GetGamesPlayed() - buyerLeader->GetGamesPlayed());
         boughtLeader->SetTeam(NULL);
         buyer->SetAbility(bought->GetAbility() + buyer->GetAbility());
