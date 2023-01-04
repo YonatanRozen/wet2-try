@@ -111,7 +111,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
             newPlayer = new Player(playerId, gamesPlayed, ability, cards, goalKeeper, NULL, spirit);
             playersHash->insert(playerId, newPlayer);
             newPlayer->SetNext(team->GetLeader());
-            newPlayer->multiplySpirit(team->GetTeamSpirit());
+            newPlayer->multiplySpirit(team->GetLeader()->GetPartialSpirit().inv()*team->GetTeamSpirit());
             newPlayer->SetGamesPlayed(gamesPlayed - team->GetLeader()->GetGamesPlayed());
         }
         teamsByAbility->remove(*team, &CompareByAbility);
