@@ -87,9 +87,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    const permutation_t &spirit, int gamesPlayed,
                                    int ability, int cards, bool goalKeeper)
 {
-    if (playerId == 23197 && teamId == 3798){
-        int b = 9;
-    }
     Team temp = Team(teamId);
     if(playerId <= 0 || teamId <= 0 || !spirit.isvalid() || gamesPlayed < 0 || cards < 0)
         return StatusType::INVALID_INPUT;
