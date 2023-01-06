@@ -30,6 +30,7 @@ private:
         hollowTree(t->left);
         hollowTree(t->right);
         delete t->data;
+        t->data = NULL;
     }
     void makeEmpty(Node* t){
         if (t == NULL)
@@ -181,6 +182,7 @@ private:
                 else if(t->right == NULL)
                     t = t->left;
                 delete temp;
+                temp = NULL;
             }
             //Left & not right case:
             /*

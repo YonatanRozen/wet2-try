@@ -26,7 +26,8 @@ void minimizePath(Player* player){
     player->SetNext(player->GetNext()->GetNext());
 }
 
-world_cup_t::world_cup_t() : teamsById(nullptr), teamsByAbility(nullptr),  playersHash(NULL), numOfTeams(0) {}
+world_cup_t::world_cup_t() : teamsById(new AVL_Rank<Team>()), teamsByAbility(new AVL_Rank<Team>()),
+playersHash(new HashTable<int, Player*>(INITIAL_SIZE)), numOfTeams(0) {}
 
 
 
@@ -49,12 +50,6 @@ StatusType world_cup_t::add_team(int teamId)
     }
     try{
         Team* newTeam = new Team(teamId);
-        if (this->teamsById == NULL){
-            this->teamsById = new AVL_Rank<Team>();
-        }
-        if (this->teamsByAbility == NULL){
-            this->teamsByAbility = new AVL_Rank<Team>();
-        }
         this->teamsById->insert(newTeam, &CompareById);
         this->teamsByAbility->insert(newTeam, &CompareByAbility);
         numOfTeams++;
@@ -92,17 +87,18 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
                                    const permutation_t &spirit, int gamesPlayed,
                                    int ability, int cards, bool goalKeeper)
 {
+    if (playerId == 23197 && teamId == 3798){
+        int b = 9;
+    }
     Team temp = Team(teamId);
     if(playerId <= 0 || teamId <= 0 || !spirit.isvalid() || gamesPlayed < 0 || cards < 0)
         return StatusType::INVALID_INPUT;
-    if((playersHash != NULL && playersHash->get(playerId) != NULL) ||
+    if( teamsById == NULL || (playersHash != NULL && playersHash->get(playerId) != NULL) ||
     (teamsById != NULL && teamsById->find(temp, &CompareById) == NULL))
         return StatusType::FAILURE;
     try{
-        Team* team = teamsById->find(temp, CompareById);
+        Team* team = teamsById->find(temp, &CompareById);
         Player* newPlayer;
-        if (playersHash == NULL)
-            playersHash = new HashTable<int, Player*>(INITIAL_SIZE);
         if (team->GetNumOfPlayers() == 0){
             newPlayer = new Player(playerId, gamesPlayed, ability, cards, goalKeeper, team, spirit);
             playersHash->insert(playerId, newPlayer);
