@@ -27,7 +27,7 @@ void minimizePath(Player* player){
 }
 
 world_cup_t::world_cup_t() : teamsById(new AVL_Rank<Team>()), teamsByAbility(new AVL_Rank<Team>()),
-playersHash(new HashTable<int, Player*>(INITIAL_SIZE)), numOfTeams(0) {}
+playersHash(new HashTable<Player*>(INITIAL_SIZE)), numOfTeams(0) {}
 
 
 
@@ -70,7 +70,6 @@ StatusType world_cup_t::remove_team(int teamId)
     }
     try{
         Team* team = this->teamsById->find(tempTeam, &CompareById);
-        team->SetActive(false);
         this->teamsById->remove(*team, &CompareById);
         this->teamsByAbility->remove(*team, &CompareByAbility);
         if (team->GetLeader())
@@ -91,7 +90,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     if(playerId <= 0 || teamId <= 0 || !spirit.isvalid() || gamesPlayed < 0 || cards < 0)
         return StatusType::INVALID_INPUT;
     if( teamsById == NULL || (playersHash != NULL && playersHash->get(playerId) != NULL) ||
-    (teamsById != NULL && teamsById->find(temp, &CompareById) == NULL))
+    (teamsById->find(temp, &CompareById) == NULL))
         return StatusType::FAILURE;
     try{
         Team* team = teamsById->find(temp, &CompareById);
@@ -286,7 +285,6 @@ StatusType world_cup_t::buy_team(int buyerId, int boughtId)
         teamsById->remove(*bought, &CompareById);
         teamsByAbility->remove(*bought, &CompareByAbility);
         bought->SetId(buyer->GetId());
-        bought->SetActive(true);
         teamsById->insert(bought, &CompareById);
         teamsByAbility->insert(bought, &CompareByAbility);
         delete buyer;
@@ -294,7 +292,6 @@ StatusType world_cup_t::buy_team(int buyerId, int boughtId)
         teamsById->remove(*bought, &CompareById);
         teamsByAbility->remove(*bought, &CompareByAbility);
         delete bought;
-        buyer->SetActive(true);
     }
     else if (buyerSize >= boughtSize){
         teamsByAbility->remove(*buyer, &CompareByAbility);
@@ -306,7 +303,6 @@ StatusType world_cup_t::buy_team(int buyerId, int boughtId)
         buyer->SetNumOfPlayers(bought->GetNumOfPlayers() + buyer->GetNumOfPlayers());
         buyer->SetNumGoalKeepers(bought->GetNumGoalkeepers() + buyer->GetNumGoalkeepers());
         buyer->SetPoints(buyer->GetPoints() + bought->GetPoints());
-        buyer->SetActive(true);
         buyer->multiplyTeamSpirit(bought->GetTeamSpirit());
         buyer->UpdateStrength();
         teamsById->remove(*bought, &CompareById);
@@ -326,7 +322,6 @@ StatusType world_cup_t::buy_team(int buyerId, int boughtId)
         buyer->SetNumOfPlayers(bought->GetNumOfPlayers() + buyer->GetNumOfPlayers());
         buyer->SetNumGoalKeepers(bought->GetNumGoalkeepers() + buyer->GetNumGoalkeepers());
         buyer->SetPoints(buyer->GetPoints() + bought->GetPoints());
-        buyer->SetActive(true);
         buyer->multiplyTeamSpirit(bought->GetTeamSpirit());
         buyer->UpdateStrength();
         buyerLeader->SetTeam(NULL);

@@ -5,9 +5,9 @@
 #ifndef WET2_NODE_H
 #define WET2_NODE_H
 
-template<typename K, typename V>
+template<typename V>
 struct Node {
-    K key;
+    int key;
     V value;
     Node* next;
 };

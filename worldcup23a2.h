@@ -28,7 +28,7 @@ private:
 	//
     AVL_Rank<Team>* teamsById;
     AVL_Rank<Team>* teamsByAbility;
-    HashTable<int, Player*>* playersHash;
+    HashTable<Player*>* playersHash;
     int numOfTeams;
 
 public:

@@ -19,12 +19,11 @@ private:
     int points;
     int teamAbility;
     int numGoalKeepers;
-    bool isActive;
     permutation_t teamSpirit;
     Player* leader;
 public:
     Team(int id) : teamId(id), teamStrength(0), numOfPlayers(0), gamesPlayed(0), points(0), teamAbility(0), numGoalKeepers(0),
-    isActive(true), teamSpirit(permutation_t::neutral()), leader(nullptr){}
+    teamSpirit(permutation_t::neutral()), leader(nullptr){}
     int GetId() const {return this->teamId;}
     int GetAbility() const {return this->teamAbility;}
     int GetNumOfPlayers() const {return this->numOfPlayers;}
@@ -33,13 +32,11 @@ public:
     int GetPoints() const {return this->points;}
     int GetStrength() const {return this->teamStrength;}
     Player* GetLeader() const{return this->leader;}
-    bool IsActive() const{return isActive;}
     void UpdateStrength(){teamStrength = teamSpirit.strength();}
      permutation_t GetTeamSpirit() const {return this->teamSpirit;}
      void multiplyTeamSpirit(const permutation_t& other) {teamSpirit = teamSpirit*other;}
      void SetAbility(int val) {this->teamAbility = val;}
     void SetLeader(Player* other) {leader = other;}
-    void SetActive(bool val) {this->isActive = val;}
     void SetGamesPlayed(int val) {this->gamesPlayed = val;}
     void SetNumOfPlayers(int val) {this->numOfPlayers = val;}
     void SetNumGoalKeepers(int val) {this->numGoalKeepers = val;}
